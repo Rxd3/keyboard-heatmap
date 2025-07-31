@@ -1,0 +1,208 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(-45deg, #000000, #0d0d0d, #000000, #0d0d0d);
+	background-size: 400% 400%;
+	animation: gradient 13s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    font-size: 64px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 40px;
+    font-weight: normal;
+    color: #ccc;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: normal;
+    color: #ccc;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+#keyboard-container {
+    position: relative; /* This is the positioning context */
+    margin: 20px auto;
+    width: 1000px;
+}
+
+#heatmap-container {
+    position: absolute;
+    top: -425px; /* Adjust this value to move the heatmap up/down */
+    left: 70px;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* A high z-index to ensure it's on top */
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+.heatmap-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sample-buttons {
+    margin-bottom: 20px;
+}
+
+.sample-buttons button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.sample-buttons button:hover {
+    background-color: #444;
+    border-color: #777;
+}
+
+#text-input {
+    width: 95%;
+    max-width: 980px;
+    height: 100px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font-size: 14px;
+    resize: vertical;
+    background-color: #222;
+    color: #fff;
+}
+
+#text-input::placeholder {
+    color: #888;
+}
+
+#keyboard-img {
+    width: 100%;
+    display: block;
+    position: relative; /* Add positioning context */
+    z-index: 1;         /* Ensure it's below the heatmap */
+}
+
+#sidebar {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(40, 40, 40, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.sidebar-toggle {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    color: #fff;
+    font-size: 14px;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.heatmap-size-select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.heatmap-size-select:focus {
+    outline: none;
+    border-color: #4c93af;
+}
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-left: 10px;
+    order: 2; /* This will move the switch to the right */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4c93af;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #4CAF50;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}

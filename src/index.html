@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Heatmap</title>
+    <link rel="stylesheet" href="style.css?v=1.1">
+</head>
+<body>
+    <div id="sidebar">
+        <div class="sidebar-toggle">
+            <label class="switch">
+                <input type="checkbox" id="toggle-spacebar">
+                <span class="slider round"></span>
+            </label>
+            <span>Show Spacebar</span>
+        </div>
+        <div class="sidebar-toggle">
+            <label for="heatmap-size">Heatmap Size:</label>
+            <select id="heatmap-size" class="heatmap-size-select">
+                <option value="small">Small</option>
+                <option value="normal" selected>Normal</option>
+                <option value="big">Big</option>
+            </select>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Keyboard Heatmap</h1>
+        <h2>Visualize your typing patterns</h2>
+        <h3>Created by: Raşit</h3>
+        <div id="keyboard-container">
+            <img id="keyboard-img" src="transkeybord.png" alt="Keyboard Layout">
+            <div id="heatmap-container"></div>
+        </div>
+
+        <div class="sample-buttons">
+            <button id="sample1">Sample 1</button>
+            <button id="sample2">Sample 2</button>
+            <button id="sample3">Sample 3</button>
+            <button id="sample4">Sample 4</button>
+        </div>
+
+        <textarea id="text-input" placeholder="Type here to generate a heatmap..."></textarea>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.2/heatmap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
