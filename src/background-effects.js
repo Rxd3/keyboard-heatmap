@@ -1,7 +1,7 @@
 // Create particle effect
 document.addEventListener('DOMContentLoaded', () => {
     const particlesContainer = document.getElementById('particles-container');
-    const particleCount = 80;
+    const particleCount = 120;
     
     // Create particles
     for (let i = 0; i < particleCount; i++) {

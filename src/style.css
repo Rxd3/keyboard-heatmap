@@ -120,6 +120,67 @@ body {
     pointer-events: none;
 }
 
+/* Footer Styles */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.credits {
+    color: #888;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.credits span {
+    color: #4CAF50;
+    font-weight: 500;
+}
+
+.copyright {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.social-link {
+    color: #888;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-link:hover {
+    color: #4CAF50;
+    transform: translateY(-3px);
+    background: rgba(76, 175, 80, 0.1);
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
 /* Typing animation styles */
 h2 {
     min-height: 2.5rem;
@@ -164,7 +225,7 @@ h2 {
 
 .container {
     text-align: center;
-    position: relative;
+    position: fixed;
     z-index: 10;
     background: rgba(5, 5, 5, 0.85);
     padding: 2rem;
@@ -174,6 +235,8 @@ h2 {
     margin: 2rem;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    flex: 1;
+    margin-bottom: 100px; /* Space for footer */
 }
 
 h1 {
@@ -186,7 +249,7 @@ h2 {
     font-weight: normal;
     color: #ccc;
     margin-top: 0;
-    margin-bottom: 25px;
+    margin-bottom: 64px;
 }
 
 h3 {
@@ -194,12 +257,12 @@ h3 {
     font-weight: normal;
     color: #ccc;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 #keyboard-container {
     position: relative; /* This is the positioning context */
-    margin: 20px auto;
+    margin-bottom: 50px;
     width: 1000px;
 }
 
@@ -230,7 +293,7 @@ h3 {
     color: #fff;
     border: 1px solid #555;
     padding: 10px 15px;
-    margin: 0 5px;
+    margin: 5px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
@@ -270,20 +333,38 @@ h3 {
 #sidebar {
     position: fixed;
     left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(40, 40, 40, 0.9);
+    top: 20px; /* Fixed distance from top */
+    background: rgba(5, 5, 5, 0.85);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1000;
+    max-height: calc(100vh - 40px); /* Viewport height minus padding */
+    overflow-y: auto; /* Enable scrolling if content is too long */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #555 #333; /* For Firefox */
+}
+
+/* Custom scrollbar for Webkit browsers */
+#sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 3px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 3px;
 }
 
 .sidebar-toggle {
     display: flex;
     align-items: center;
     margin: 15px 0;
-    color: #fff;
+    color: #ffffff;
     font-size: 14px;
     justify-content: flex-start;
     gap: 10px;
@@ -294,7 +375,7 @@ h3 {
     border-radius: 4px;
     border: 1px solid #555;
     background-color: #333;
-    color: #fff;
+    color: #ffffff;
     font-size: 14px;
     cursor: pointer;
 }
