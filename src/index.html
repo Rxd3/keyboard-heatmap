@@ -35,6 +35,34 @@
                 <option value="big">Big</option>
             </select>
         </div>
+        <div class="sidebar-toggle">
+            <button id="reset-stats" class="reset-button">
+                <i class="fas fa-redo"></i> Reset Statistics
+            </button>
+        </div>
+    </div>    <!-- Stats Container -->
+    <div id="stats-container">
+        <h3>Typing Statistics</h3>
+        <div class="stat-item">
+            <span class="stat-label">Total Keystrokes:</span>
+            <span class="stat-value" id="total-keystrokes">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Most Used Key:</span>
+            <span class="stat-value" id="most-used-key">-</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Backspace Count:</span>
+            <span class="stat-value" id="backspace-count">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Word Count:</span>
+            <span class="stat-value" id="word-count">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Avg. Word Length:</span>
+            <span class="stat-value" id="avg-word-length">0</span>
+        </div>
     </div>
     <div class="container">
         <h1>Keyboard Heatmap</h1>

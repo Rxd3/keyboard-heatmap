@@ -16,34 +16,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const keyCoordinates = {
             // Number row
-            '1': { x: 60, y: 70 }, '!': { x: 60, y: 70 },
-            '2': { x: 125, y: 70 }, '@': { x: 125, y: 70 },
-            '3': { x: 185, y: 70 }, '#': { x: 185, y: 70 },
-            '4': { x: 245, y: 70 }, '$': { x: 245, y: 70 },
-            '5': { x: 313, y: 70 }, '%': { x: 313, y: 70 },
-            '6': { x: 380, y: 70 }, '^': { x: 380, y: 70 },
-            '7': { x: 440, y: 70 }, '&': { x: 440, y: 70 },
-            '8': { x: 500, y: 70 }, '*': { x: 500, y: 70 },
-            '9': { x: 563, y: 70 }, '(': { x: 563, y: 70 },
-            '0': { x: 625, y: 70 }, ')': { x: 625, y: 70 },
-            '-': { x: 690, y: 70 }, '_': { x: 690, y: 70 },
-            '=': { x: 760, y: 70 }, '+': { x: 760, y: 70 },
+            '1': { x: 43, y: 64 }, '!': { x: 43, y: 64 },
+            '2': { x: 110, y: 64 }, '@': { x: 110, y: 64 },
+            '3': { x: 175, y: 64 }, '#': { x: 175, y: 64 },
+            '4': { x: 245, y: 64 }, '$': { x: 245, y: 64 },
+            '5': { x: 313, y: 64 }, '%': { x: 313, y: 64 },
+            '6': { x: 380, y: 64 }, '^': { x: 380, y: 64 },
+            '7': { x: 445, y: 64 }, '&': { x: 445, y: 64 },
+            '8': { x: 515, y: 64 }, '*': { x: 515, y: 64 },
+            '9': { x: 580, y: 64 }, '(': { x: 580, y: 64 },
+            '0': { x: 645, y: 64 }, ')': { x: 645, y: 64 },
+            '-': { x: 715, y: 64 }, '_': { x: 715, y: 64 },
+            '=': { x: 785, y: 64 }, '+': { x: 785, y: 64 },
             // Top letter row
-            'q': { x: 105, y: 130 }, 'w': { x: 165, y: 130 }, 'e': { x: 225, y: 130 }, 'r': { x: 285, y: 130 }, 't': { x: 350, y: 130 }, 'y': { x: 415, y: 130 }, 'u': { x: 475, y: 130 }, 'i': { x: 540, y: 130 }, 'o': { x: 605, y: 130 }, 'p': { x: 665, y: 130 }, 
-            '[': { x: 730, y: 130 }, '{': { x: 730, y: 130 },
-            ']': { x: 790, y: 130 }, '}': { x: 790, y: 130 },
-            '\\': { x: 850, y: 130 }, '|': { x: 850, y: 130 },
+            'q': { x: 80, y: 130 }, 'w': { x: 150, y: 130 }, 'e': { x: 215, y: 130 }, 'r': { x: 285, y: 130 }, 't': { x: 350, y: 130 }, 'y': { x: 415, y: 130 }, 'u': { x: 485, y: 130 }, 'i': { x: 555, y: 130 }, 'o': { x: 622, y: 130 }, 'p': { x: 685, y: 130 }, 
+            '[': { x: 755, y: 130 }, '{': { x: 755, y: 130 },
+            ']': { x: 820, y: 130 }, '}': { x: 820, y: 130 },
+            '\\': { x: 885, y: 130 }, '|': { x: 885, y: 130 },
             // Home row
-            'a': { x: 135, y: 190 }, 's': { x: 195, y: 190 }, 'd': { x: 255, y: 190 }, 'f': { x: 315, y: 190 }, 'g': { x: 375, y: 190 }, 'h': { x: 435, y: 190 }, 'j': { x: 505, y: 190 }, 'k': { x: 570, y: 190 }, 'l': { x: 630, y: 190 }, 
-            ';': { x: 695, y: 190 }, ':': { x: 695, y: 190 },
-            '\'': { x: 760, y: 190 }, '"': { x: 760, y: 190 },
+            'a': { x: 110, y: 190 }, 's': { x: 175, y: 190 }, 'd': { x: 245, y: 190 }, 'f': { x: 315, y: 190 }, 'g': { x: 380, y: 190 }, 'h': { x: 450, y: 190 }, 'j': { x: 518, y: 190 }, 'k': { x: 584, y: 190 }, 'l': { x: 650, y: 190 }, 
+            ';': { x: 715, y: 190 }, ':': { x: 715, y: 190 },
+            '\'': { x: 780, y: 190 }, '"': { x: 780, y: 190 },
             // Bottom letter row
-            'z': { x: 150, y: 250 }, 'x': { x: 210, y: 250 }, 'c': { x: 270, y: 250 }, 'v': { x: 335, y: 250 }, 'b': { x: 400, y: 250 }, 'n': { x: 465, y: 250 }, 'm': { x: 525, y: 250 },
-            ',': { x: 585, y: 250 }, '<': { x: 585, y: 250 },
-            '.': { x: 645, y: 250 }, '>': { x: 645, y: 250 },
-            '/': { x: 710, y: 250 }, '?': { x: 710, y: 250 },
+            'z': { x: 130, y: 255 }, 'x': { x: 200, y: 255 }, 'c': { x: 265, y: 255 }, 'v': { x: 335, y: 255 }, 'b': { x: 400, y: 255 }, 'n': { x: 465, y: 255 }, 'm': { x: 535, y: 255 },
+            ',': { x: 600, y: 255 }, '<': { x: 665, y: 255 },
+            '.': { x: 670, y: 255 }, '>': { x: 670, y: 255 },
+            '/': { x: 730, y: 255 }, '?': { x: 730, y: 255 },
             // Space bar
-            ' ': { x: 435, y: 310 }
+            ' ': { x: 450, y: 320 }
         };
 
         const sampleTexts = {
@@ -187,10 +187,259 @@ document.addEventListener('DOMContentLoaded', () => {
         generateHeatmap(initialText);
     }
 
+    // Stats tracking variables
+    const stats = {
+        totalKeystrokes: 0,
+        keyPresses: {},
+        backspaceCount: 0,
+        wordCount: 0,
+        totalWordLength: 0,
+        lastKeyWasSpace: false
+    };
+
+    // Initialize stats
+    function initStats() {
+        // Reset all stats
+        stats.totalKeystrokes = 0;
+        stats.keyPresses = {};
+        stats.backspaceCount = 0;
+        stats.wordCount = 0;
+        stats.totalWordLength = 0;
+        stats.lastKeyWasSpace = false;
+        
+        updateStatsDisplay();
+    }
+
+    // Update the stats display
+    function updateStatsDisplay() {
+        // Update total keystrokes
+        document.getElementById('total-keystrokes').textContent = stats.totalKeystrokes;
+        
+        // Update backspace count
+        document.getElementById('backspace-count').textContent = stats.backspaceCount;
+        
+        // Update word count
+        document.getElementById('word-count').textContent = stats.wordCount;
+        
+        // Calculate and update average word length
+        const avgWordLength = stats.wordCount > 0 
+            ? (stats.totalWordLength / stats.wordCount).toFixed(1)
+            : '0';
+        document.getElementById('avg-word-length').textContent = avgWordLength;
+        
+        // Find and update most used key
+        let mostUsedKey = '-';
+        let maxCount = 0;
+        
+        for (const [key, count] of Object.entries(stats.keyPresses)) {
+            if (count > maxCount && key !== ' ' && key !== 'Backspace') {
+                maxCount = count;
+                mostUsedKey = key === ' ' ? 'Space' : key.toUpperCase();
+            }
+        }
+        
+        document.getElementById('most-used-key').textContent = mostUsedKey;
+    }
+
+    // Handle keyboard input for stats
+    function handleKeyForStats(key) {
+        // Skip if it's a control key we don't want to count
+        if ([
+            'Shift', 'Control', 'Alt', 'Meta', 'CapsLock',
+            'Tab', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'
+        ].includes(key)) {
+            return;
+        }
+        
+        // Handle backspace
+        if (key === 'Backspace') {
+            stats.backspaceCount++;
+            return;
+        }
+        
+        // Count the key press
+        stats.totalKeystrokes++;
+        stats.keyPresses[key] = (stats.keyPresses[key] || 0) + 1;
+        
+        // Update word count and average word length
+        if (key === ' ') {
+            if (!stats.lastKeyWasSpace) {
+                stats.wordCount++;
+            }
+            stats.lastKeyWasSpace = true;
+        } else {
+            if (stats.lastKeyWasSpace) {
+                stats.wordCount++;
+                stats.lastKeyWasSpace = false;
+            }
+            // Add to total word length if it's not a space
+            stats.totalWordLength++;
+        }
+        
+        // Update the display
+        updateStatsDisplay();
+    }
+
+    // Add event listener for reset button
+    const resetButton = document.getElementById('reset-stats');
+    if (resetButton) {
+        resetButton.addEventListener('click', initStats);
+    }
+
+    // Make sidebar draggable
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        let isSidebarDragging = false;
+        let sidebarOffsetX, sidebarOffsetY;
+        
+        // Use the first toggle as the drag handle
+        const sidebarHandle = sidebar.querySelector('.sidebar-toggle:first-child') || sidebar;
+        
+        const startSidebarDrag = (e) => {
+            // Only start dragging if clicking on the handle or its children (but not inputs/buttons)
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT') {
+                return;
+            }
+            
+            isSidebarDragging = true;
+            const rect = sidebar.getBoundingClientRect();
+            sidebarOffsetX = e.clientX - rect.left;
+            sidebarOffsetY = e.clientY - rect.top;
+            
+            e.preventDefault();
+            sidebar.style.cursor = 'grabbing';
+            document.addEventListener('mousemove', onSidebarDrag);
+            document.addEventListener('mouseup', stopSidebarDrag);
+        };
+        
+        const onSidebarDrag = (e) => {
+            if (!isSidebarDragging) return;
+            
+            const x = e.clientX - sidebarOffsetX;
+            const y = e.clientY - sidebarOffsetY;
+            
+            sidebar.style.left = `${x}px`;
+            sidebar.style.top = `${y}px`;
+            sidebar.style.transform = 'none';
+        };
+        
+        const stopSidebarDrag = () => {
+            isSidebarDragging = false;
+            sidebar.style.cursor = 'grab';
+            document.removeEventListener('mousemove', onSidebarDrag);
+            document.removeEventListener('mouseup', stopSidebarDrag);
+        };
+        
+        sidebarHandle.addEventListener('mousedown', startSidebarDrag);
+    }
+
+    // Make stats container draggable
+    const statsContainer = document.getElementById('stats-container');
+    if (statsContainer) {
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        // Make the header the drag handle
+        const header = statsContainer.querySelector('h3');
+        
+        const startDrag = (e) => {
+            isDragging = true;
+            
+            // Calculate the offset from the mouse to the container's top-left corner
+            const rect = statsContainer.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            
+            // Prevent text selection while dragging
+            e.preventDefault();
+            
+            // Change cursor to grabbing
+            statsContainer.style.cursor = 'grabbing';
+            if (header) header.style.cursor = 'grabbing';
+            
+            // Add event listeners for mousemove and mouseup
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', stopDrag);
+        };
+        
+        const onDrag = (e) => {
+            if (!isDragging) return;
+            
+            // Calculate new position
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
+            
+            // Update container position
+            statsContainer.style.left = `${x}px`;
+            statsContainer.style.top = `${y}px`;
+            
+            // Remove any transform that might interfere
+            statsContainer.style.transform = 'none';
+        };
+        
+        const stopDrag = () => {
+            isDragging = false;
+            
+            // Revert cursor
+            statsContainer.style.cursor = 'grab';
+            if (header) header.style.cursor = 'grab';
+            
+            // Remove event listeners
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', stopDrag);
+        };
+        
+        // Add event listeners to the header
+        if (header) {
+            header.addEventListener('mousedown', startDrag);
+        } else {
+            // Fallback to the whole container if no header is found
+            statsContainer.addEventListener('mousedown', startDrag);
+        }
+    }
+
     // Ensure the app only runs after the image is fully loaded
     if (keyboardImg.complete) {
         initializeHeatmapApp();
+        initStats();
+        
+        // Add event listener for keyboard input
+        const textInput = document.getElementById('text-input');
+        textInput.addEventListener('keydown', (e) => {
+            handleKeyForStats(e.key);
+        });
+        
+        // Update stats when text is pasted or changed programmatically
+        textInput.addEventListener('input', () => {
+            // This will be triggered after the paste event
+            // We'll just update the word count and average word length
+            const text = textInput.value;
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            stats.wordCount = words.length;
+            stats.totalWordLength = words.reduce((sum, word) => sum + word.length, 0);
+            updateStatsDisplay();
+        });
     } else {
-        keyboardImg.addEventListener('load', initializeHeatmapApp);
+        keyboardImg.addEventListener('load', () => {
+            initializeHeatmapApp();
+            initStats();
+            
+            // Add event listener for keyboard input
+            const textInput = document.getElementById('text-input');
+            textInput.addEventListener('keydown', (e) => {
+                handleKeyForStats(e.key);
+            });
+            
+            // Update stats when text is pasted or changed programmatically
+            textInput.addEventListener('input', () => {
+                // This will be triggered after the paste event
+                // We'll just update the word count and average word length
+                const text = textInput.value;
+                const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                stats.wordCount = words.length;
+                stats.totalWordLength = words.reduce((sum, word) => sum + word.length, 0);
+                updateStatsDisplay();
+            });
+        });
     }
 });

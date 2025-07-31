@@ -268,7 +268,7 @@ h3 {
 
 #heatmap-container {
     position: absolute;
-    top: -425px; /* Adjust this value to move the heatmap up/down */
+    top: -363px; /* Adjust this value to move the heatmap up/down */
     left: 70px;
     width: 100%;
     height: 100%;
@@ -339,10 +339,105 @@ h3 {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     z-index: 1000;
-    max-height: calc(100vh - 40px); /* Viewport height minus padding */
+    max-height: calc(50vh - 30px); /* Half of viewport height minus padding */
     overflow-y: auto; /* Enable scrolling if content is too long */
     scrollbar-width: thin; /* For Firefox */
     scrollbar-color: #555 #333; /* For Firefox */
+    cursor: move; /* Fallback */
+    cursor: grab;
+    user-select: none; /* Prevent text selection while dragging */
+}
+
+#sidebar:active {
+    cursor: grabbing;
+}
+
+#sidebar .sidebar-toggle:first-child {
+    cursor: move; /* Fallback */
+    cursor: grab;
+    user-select: none; /* Prevent text selection while dragging */
+}
+
+#sidebar .sidebar-toggle:first-child:active {
+    cursor: grabbing;
+}
+
+/* Stats Container Styles */
+#stats-container {
+    position: fixed;
+    left: 20px;
+    top: calc(50vh + 10px); /* Position below the sidebar */
+    background: rgba(5, 5, 5, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 250px;
+    color: #e0e0e0;
+    max-height: calc(50vh - 40px);
+    overflow-y: auto;
+    cursor: move; /* Fallback */
+    cursor: grab;
+    user-select: none; /* Prevent text selection while dragging */
+}
+
+#stats-container:active {
+    cursor: grabbing;
+}
+
+#stats-container h3 {
+    margin: 0 0 15px 0;
+    color: #4CAF50;
+    font-size: 1.1em;
+    border-bottom: 1px solid #444;
+    padding-bottom: 8px;
+    cursor: move; /* Fallback */
+    cursor: grab;
+    user-select: none; /* Prevent text selection while dragging */
+}
+
+#stats-container h3:active {
+    cursor: grabbing;
+}
+
+#stats-container h3 {
+    margin: 0 0 15px 0;
+    color: #4CAF50;
+    font-size: 1.1em;
+    border-bottom: 1px solid #444;
+    padding-bottom: 8px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.stat-label {
+    color: #aaa;
+    margin-right: 10px;
+}
+
+.stat-value {
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Custom scrollbar for Webkit browsers */
+#stats-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#stats-container::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 3px;
+}
+
+#stats-container::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 3px;
 }
 
 /* Custom scrollbar for Webkit browsers */
@@ -435,4 +530,36 @@ input:focus + .slider {
 
 input:checked + .slider:before {
     transform: translateX(26px);
+}
+
+/* Reset Button Styles */
+.reset-button {
+    width: 100%;
+    padding: 8px 12px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+.reset-button:hover {
+    background: #444;
+    border-color: #666;
+}
+
+.reset-button:active {
+    background: #2a2a2a;
+    transform: translateY(1px);
+}
+
+.reset-button i {
+    font-size: 12px;
 }
