@@ -200,7 +200,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #4CAF50;
+    box-shadow: 0 0 1px #4c93af;
 }
 
 input:checked + .slider:before {
