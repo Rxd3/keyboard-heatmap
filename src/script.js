@@ -97,17 +97,13 @@ function displaySentence(sentence) {
 
 // Handle keyboard input
 function handleKeyDown(e) {
-    console.log('Key pressed:', e.key, 'Key code:', e.keyCode);
-    
     const wpmTest = document.getElementById('wpm-test');
     if (!wpmTest || wpmTest.style.display === 'none') {
-        console.log('WPM test not active, ignoring key press');
         return;
     }
     
     // Start timer on first keypress
     if (startTime === 0) {
-        console.log('Starting WPM test timer');
         startTime = Date.now();
     }
     
@@ -285,12 +281,10 @@ function resetWPMTest() {
 
 // Start a new WPM test
 function startWPMTest() {
-    console.log('Starting WPM test');
     const wpmStart = document.getElementById('wpm-start');
     const wpmTest = document.getElementById('wpm-test');
     
     if (!wpmStart || !wpmTest) {
-        console.error('Missing WPM test elements');
         return;
     }
     
@@ -306,7 +300,7 @@ function startWPMTest() {
     
     // Generate and display sentence
     currentSentence = generateRandomSentence(10);
-    console.log('Current sentence:', currentSentence);
+
     displaySentence(currentSentence);
     
     // Reset state
@@ -319,16 +313,12 @@ function startWPMTest() {
             max: 1,
             data: []
         });
-        console.log('Heatmap cleared for new WPM test');
     }
     
     // Focus the hidden input
     const wpmInput = document.getElementById('wpm-input');
     if (wpmInput) {
-        console.log('Focusing WPM input');
         wpmInput.focus();
-    } else {
-        console.error('WPM input element not found');
     }
 }
 
@@ -375,23 +365,17 @@ function initHeatmap() {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Document loaded, initializing...');
     const keyboardImg = document.getElementById('keyboard-img');
     
     // Set up start button event listener
     const startButton = document.getElementById('start-typing-btn');
     if (startButton) {
-        console.log('Start button found, adding click listener');
         startButton.addEventListener('click', startWPMTest);
-    } else {
-        console.error('Start button not found!');
     }
     
     // Set up global keydown listener for the WPM test
-    console.log('Setting up global keydown listener');
     document.addEventListener('keydown', function(e) {
         const wpmTest = document.getElementById('wpm-test');
-        console.log('Global keydown event - WPM test visible:', wpmTest && wpmTest.style.display !== 'none');
         
         if (wpmTest && wpmTest.style.display !== 'none') {
             e.preventDefault(); // Prevent default behavior

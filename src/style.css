@@ -642,6 +642,30 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+/* Text Input Styles */
+#text-input {
+    display: block;
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: none;
+    min-height: 120px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#text-input:focus {
+    border-color: #4c93af;
+    box-shadow: 0 0 10px rgba(76, 147, 175, 0.5);
+}
+
 /* Reset Button Styles */
 .reset-button {
     width: 100%;
