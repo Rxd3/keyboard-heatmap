@@ -1,5 +1,458 @@
+// Global variables
+let heatmapInstance = null;  // Declare heatmapInstance at the top level
+let originalKeyCoordinates = null; // Store original key coordinates for toggling spacebar
+
+// Key coordinates for heatmap - map of character to {x, y} coordinates
+const keyCoordinates = {
+    // Number row
+    '1': { x: 43, y: 64 }, '!': { x: 43, y: 64 },
+    '2': { x: 110, y: 64 }, '@': { x: 110, y: 64 },
+    '3': { x: 175, y: 64 }, '#': { x: 175, y: 64 },
+    '4': { x: 245, y: 64 }, '$': { x: 245, y: 64 },
+    '5': { x: 313, y: 64 }, '%': { x: 313, y: 64 },
+    '6': { x: 380, y: 64 }, '^': { x: 380, y: 64 },
+    '7': { x: 445, y: 64 }, '&': { x: 445, y: 64 },
+    '8': { x: 515, y: 64 }, '*': { x: 515, y: 64 },
+    '9': { x: 580, y: 64 }, '(': { x: 580, y: 64 },
+    '0': { x: 645, y: 64 }, ')': { x: 645, y: 64 },
+    '-': { x: 715, y: 64 }, '_': { x: 715, y: 64 },
+    '=': { x: 785, y: 64 }, '+': { x: 785, y: 64 },
+    // Top letter row
+    'q': { x: 80, y: 130 }, 'w': { x: 150, y: 130 }, 'e': { x: 215, y: 130 }, 'r': { x: 285, y: 130 }, 't': { x: 350, y: 130 }, 'y': { x: 415, y: 130 }, 'u': { x: 485, y: 130 }, 'i': { x: 555, y: 130 }, 'o': { x: 622, y: 130 }, 'p': { x: 685, y: 130 }, 
+    '[': { x: 755, y: 130 }, '{': { x: 755, y: 130 },
+    ']': { x: 820, y: 130 }, '}': { x: 820, y: 130 },
+    '\\': { x: 885, y: 130 }, '|': { x: 885, y: 130 },
+    // Home row
+    'a': { x: 110, y: 190 }, 's': { x: 175, y: 190 }, 'd': { x: 245, y: 190 }, 'f': { x: 315, y: 190 }, 'g': { x: 380, y: 190 }, 'h': { x: 450, y: 190 }, 'j': { x: 518, y: 190 }, 'k': { x: 584, y: 190 }, 'l': { x: 650, y: 190 }, 
+    ';': { x: 715, y: 190 }, ':': { x: 715, y: 190 },
+    "'": { x: 780, y: 190 }, '"': { x: 780, y: 190 },
+    // Bottom letter row
+    'z': { x: 130, y: 255 }, 'x': { x: 200, y: 255 }, 'c': { x: 265, y: 255 }, 'v': { x: 335, y: 255 }, 'b': { x: 400, y: 255 }, 'n': { x: 465, y: 255 }, 'm': { x: 535, y: 255 },
+    ',': { x: 600, y: 255 }, '<': { x: 665, y: 255 },
+    '.': { x: 670, y: 255 }, '>': { x: 670, y: 255 },
+    '/': { x: 730, y: 255 }, '?': { x: 730, y: 255 },
+    // Space bar
+    ' ': { x: 450, y: 320 }
+};
+
+// Word list for WPM test - expanded with more diverse and interesting words
+const wordList = [
+    // Common words
+    'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I',
+    'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
+    'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
+    
+    // Action verbs
+    'run', 'jump', 'swim', 'write', 'read', 'speak', 'think', 'create', 'build', 'solve',
+    'learn', 'teach', 'grow', 'change', 'move', 'travel', 'explore', 'discover', 'imagine', 'believe',
+    
+    // Descriptive words
+    'quick', 'bright', 'happy', 'brave', 'strong', 'clever', 'gentle', 'fierce', 'calm', 'vivid',
+    'vibrant', 'mystic', 'ancient', 'modern', 'rapid', 'silent', 'loud', 'soft', 'sharp', 'smooth',
+    
+    // Nature words
+    'ocean', 'mountain', 'forest', 'river', 'valley', 'desert', 'jungle', 'meadow', 'canyon', 'waterfall',
+    'thunder', 'lightning', 'breeze', 'sunset', 'sunrise', 'horizon', 'galaxy', 'planet', 'comet', 'meteor',
+    
+    // Technology words
+    'digital', 'virtual', 'network', 'system', 'process', 'analyze', 'compute', 'program', 'develop', 'design',
+    'interface', 'database', 'algorithm', 'function', 'variable', 'browser', 'server', 'cloud', 'mobile', 'device',
+    
+    // Abstract concepts
+    'freedom', 'wisdom', 'courage', 'justice', 'honor', 'beauty', 'truth', 'knowledge', 'imagination', 'creativity',
+    'curiosity', 'discovery', 'adventure', 'journey', 'destiny', 'fortune', 'miracle', 'wonder', 'mystery', 'legend'
+];
+
+// WPM Test State
+let currentCharIndex = 0;
+let startTime = 0;
+let currentSentence = '';
+
+// Generate a random sentence
+function generateRandomSentence(wordCount = 15) {
+    const words = [];
+    for (let i = 0; i < wordCount; i++) {
+        const randomIndex = Math.floor(Math.random() * wordList.length);
+        words.push(wordList[randomIndex]);
+    }
+    return words.join(' ').charAt(0).toUpperCase() + words.join(' ').slice(1) ;
+}
+
+// Display the sentence with character spans
+function displaySentence(sentence) {
+    const wpmText = document.getElementById('wpm-text');
+    if (!wpmText) return;
+    
+    wpmText.innerHTML = '';
+    
+    // Split into characters and create spans
+    const chars = sentence.split('');
+    chars.forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        if (index === 0) span.classList.add('current');
+        wpmText.appendChild(span);
+    });
+}
+
+// Handle keyboard input
+function handleKeyDown(e) {
+    console.log('Key pressed:', e.key, 'Key code:', e.keyCode);
+    
+    const wpmTest = document.getElementById('wpm-test');
+    if (!wpmTest || wpmTest.style.display === 'none') {
+        console.log('WPM test not active, ignoring key press');
+        return;
+    }
+    
+    // Start timer on first keypress
+    if (startTime === 0) {
+        console.log('Starting WPM test timer');
+        startTime = Date.now();
+    }
+    
+    // Handle backspace
+    if (e.key === 'Backspace') {
+        if (currentCharIndex > 0) {
+            const spans = document.querySelectorAll('#wpm-text span');
+            spans[currentCharIndex].classList.remove('current');
+            currentCharIndex--;
+            spans[currentCharIndex].classList.remove('correct');
+            spans[currentCharIndex].classList.add('current');
+        }
+        return;
+    }
+    
+    // Only process regular character keys
+    if (e.key.length === 1) {
+        const currentChar = currentSentence[currentCharIndex];
+        const spans = document.querySelectorAll('#wpm-text span');
+        
+        if (e.key === currentChar) {
+            // Correct character - update heatmap with the typed character
+            if (heatmapInstance) {
+                const char = e.key.toLowerCase();
+                if (keyCoordinates[char]) {
+                    const currentData = heatmapInstance.getData() || { data: [] };
+                    const existingPointIndex = currentData.data.findIndex(
+                        point => point.x === keyCoordinates[char].x && 
+                               point.y === keyCoordinates[char].y
+                    );
+                    
+                    const newData = {
+                        ...currentData,
+                        data: [...currentData.data]
+                    };
+                    
+                    if (existingPointIndex >= 0) {
+                        // Increment existing point
+                        newData.data[existingPointIndex] = {
+                            ...newData.data[existingPointIndex],
+                            value: (newData.data[existingPointIndex].value || 0) + 1
+                        };
+                    } else {
+                        // Add new point
+                        newData.data.push({
+                            x: keyCoordinates[char].x,
+                            y: keyCoordinates[char].y,
+                            value: 1
+                        });
+                    }
+                    
+                    // Update heatmap with new data
+                    heatmapInstance.setData({
+                        ...newData,
+                        max: Math.max(...newData.data.map(p => p.value), 1)
+                    });
+                }
+            }
+            
+            // Update UI
+            spans[currentCharIndex].classList.remove('current');
+            spans[currentCharIndex].classList.add('correct');
+            currentCharIndex++;
+            
+            // Check if test is complete
+            if (currentCharIndex >= currentSentence.length) {
+                endWPMTest();
+                return;
+            }
+            
+            // Move to next character
+            spans[currentCharIndex].classList.add('current');
+        }
+    }
+}
+
+// End the WPM test and show results
+function endWPMTest() {
+    const endTime = Date.now();
+    const timeElapsed = (endTime - startTime) / 1000 / 60; // in minutes
+    const wordsTyped = currentSentence.length / 5; // standard word = 5 characters
+    const wpm = Math.round(wordsTyped / timeElapsed);
+    
+    // Show results in the interface
+    // Clear and rebuild the WPM test container
+    const wpmTest = document.getElementById('wpm-test');
+    if (wpmTest) {
+        // Clear everything
+        wpmTest.innerHTML = '';
+        
+        // Create and style the container
+        const container = document.createElement('div');
+        container.style.cssText = 'text-align:center; margin:0; padding:0;';
+        
+        // Create and add the "Test Complete!" text
+        const completeText = document.createElement('div');
+        completeText.textContent = 'Test Complete!';
+        completeText.style.cssText = 'font-size:24px; color:#fff; margin:0 0 20px 0; padding:0;';
+        container.appendChild(completeText);
+        
+        // Create and add the WPM score
+        const wpmScore = document.createElement('div');
+        wpmScore.textContent = wpm + ' WPM';
+        wpmScore.style.cssText = 'font-size:48px; color:#4CAF50; font-weight:bold; margin:0 0 40px 0; padding:0;';
+        container.appendChild(wpmScore);
+        
+        // Create and add the Try Again button
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = 'display:flex; justify-content:center; width:100%; margin:0; padding:0;';
+        
+        const tryAgainBtn = document.createElement('button');
+        tryAgainBtn.id = 'try-again-btn';
+        tryAgainBtn.className = 'start-button';
+        tryAgainBtn.textContent = 'Try Again';
+        tryAgainBtn.style.cssText = 'padding:8px 30px; font-size:16px; margin:0;';
+        
+        buttonContainer.appendChild(tryAgainBtn);
+        container.appendChild(buttonContainer);
+        wpmTest.appendChild(container);
+        
+        // Add the hidden input back
+        const wpmInput = document.createElement('input');
+        wpmInput.type = 'text';
+        wpmInput.id = 'wpm-input';
+        wpmInput.style.cssText = 'opacity:0; position:absolute; pointer-events:none; width:0; height:0; border:none; padding:0; margin:0;';
+        wpmInput.tabIndex = -1;
+        wpmTest.appendChild(wpmInput);
+        
+        // Add event listener for the Try Again button
+        tryAgainBtn.addEventListener('click', resetWPMTest);
+    }
+}
+
+// Reset WPM test
+function resetWPMTest() {
+    // Reset all test state variables
+    currentCharIndex = 0;
+    startTime = 0;
+    currentSentence = '';
+    
+    // Reset the UI to initial state
+    const wpmStart = document.getElementById('wpm-start');
+    const wpmTest = document.getElementById('wpm-test');
+    
+    if (wpmStart) {
+        wpmStart.style.display = 'block';
+    }
+    
+    if (wpmTest) {
+        // Clear the test content
+        wpmTest.innerHTML = '';
+        wpmTest.style.display = 'none';
+        
+        // Recreate the wpm-text div for future use
+        const wpmText = document.createElement('div');
+        wpmText.id = 'wpm-text';
+        wpmText.className = 'big-text';
+        wpmText.style.whiteSpace = 'pre-wrap';
+        wpmText.style.wordWrap = 'break-word';
+        wpmText.style.margin = '0';
+        wpmText.style.padding = '0';
+        
+        // Recreate the hidden input
+        const wpmInput = document.createElement('input');
+        wpmInput.type = 'text';
+        wpmInput.id = 'wpm-input';
+        wpmInput.style.cssText = 'opacity:0; position:absolute; pointer-events:none; width:0; height:0; border:none; padding:0; margin:0;';
+        wpmInput.tabIndex = -1;
+        
+        // Add elements back to the test container
+        wpmTest.appendChild(wpmText);
+        wpmTest.appendChild(wpmInput);
+    }
+}
+
+// Start a new WPM test
+function startWPMTest() {
+    console.log('Starting WPM test');
+    const wpmStart = document.getElementById('wpm-start');
+    const wpmTest = document.getElementById('wpm-test');
+    
+    if (!wpmStart || !wpmTest) {
+        console.error('Missing WPM test elements');
+        return;
+    }
+    
+    // Show test UI
+    wpmStart.style.display = 'none';
+    wpmTest.style.display = 'block';
+    
+    // Apply current spacebar visibility setting to WPM test
+    const toggleSpacebar = document.getElementById('toggle-spacebar');
+    if (toggleSpacebar) {
+        updateSpacebarVisibility(toggleSpacebar.checked);
+    }
+    
+    // Generate and display sentence
+    currentSentence = generateRandomSentence(10);
+    console.log('Current sentence:', currentSentence);
+    displaySentence(currentSentence);
+    
+    // Reset state
+    currentCharIndex = 0;
+    startTime = 0;
+    
+    // Clear the heatmap at the start of the test
+    if (heatmapInstance) {
+        heatmapInstance.setData({
+            max: 1,
+            data: []
+        });
+        console.log('Heatmap cleared for new WPM test');
+    }
+    
+    // Focus the hidden input
+    const wpmInput = document.getElementById('wpm-input');
+    if (wpmInput) {
+        console.log('Focusing WPM input');
+        wpmInput.focus();
+    } else {
+        console.error('WPM input element not found');
+    }
+}
+
+// Update spacebar visibility based on toggle state
+function updateSpacebarVisibility(showSpacebar) {
+    if (showSpacebar) {
+        keyCoordinates[' '] = originalKeyCoordinates[' ']; // Restore spacebar
+    } else {
+        delete keyCoordinates[' ']; // Remove spacebar
+    }
+    
+    // Update heatmap with new key coordinates
+    if (heatmapInstance) {
+        heatmapInstance.setData({
+            max: 1,
+            data: []
+        });
+    }
+}
+
+// Initialize heatmap
+function initHeatmap() {
+    if (heatmapInstance) {
+        heatmapInstance._renderer.canvas.remove();
+    }
+    
+    const heatmapConfig = {
+        container: document.getElementById('heatmap-container'),
+        radius: 65,
+        maxOpacity: 0.45,
+        minOpacity: 0.01,
+        blur: 0.9,
+        gradient: {
+            0.25: 'blue',
+            0.5: 'green',
+            0.75: 'yellow',
+            1: 'red'
+        }
+    };
+    
+    heatmapInstance = h337.create(heatmapConfig);
+    return heatmapInstance;
+}
+
+// Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Document loaded, initializing...');
     const keyboardImg = document.getElementById('keyboard-img');
+    
+    // Set up start button event listener
+    const startButton = document.getElementById('start-typing-btn');
+    if (startButton) {
+        console.log('Start button found, adding click listener');
+        startButton.addEventListener('click', startWPMTest);
+    } else {
+        console.error('Start button not found!');
+    }
+    
+    // Set up global keydown listener for the WPM test
+    console.log('Setting up global keydown listener');
+    document.addEventListener('keydown', function(e) {
+        const wpmTest = document.getElementById('wpm-test');
+        console.log('Global keydown event - WPM test visible:', wpmTest && wpmTest.style.display !== 'none');
+        
+        if (wpmTest && wpmTest.style.display !== 'none') {
+            e.preventDefault(); // Prevent default behavior
+            e.stopPropagation(); // Stop event bubbling
+            handleKeyDown(e);
+        }
+    }, true); // Use capture phase to catch events earlier
+
+    function toggleSampleButtons(wpmMode) {
+        const sampleButtons = document.getElementById('sample-buttons');
+        const startScreen = document.getElementById('start-screen');
+        const textInput = document.getElementById('text-input');
+        const wpmStart = document.getElementById('wpm-start');
+        const wpmTest = document.getElementById('wpm-test');
+        
+        if (wpmMode) {
+            // WPM mode ON - show start screen, hide sample buttons and textarea
+            sampleButtons.style.display = 'none';
+            startScreen.style.display = 'block';
+            textInput.style.display = 'none';
+            
+            // Reset WPM test state
+            wpmStart.style.display = 'block';
+            wpmTest.style.display = 'none';
+        } else {
+            // WPM mode OFF - show sample buttons and textarea, hide start screen
+            sampleButtons.style.display = 'block';
+            startScreen.style.display = 'none';
+            textInput.style.display = 'block';
+            
+            // Reset WPM test
+            resetWPMTest();
+        }
+    }
+    
+    // Initialize toggle state from localStorage if available
+    const toggleCheckbox = document.getElementById('toggle-sample-buttons');
+    const savedToggleState = localStorage.getItem('showSampleButtons');
+    
+    if (savedToggleState !== null) {
+        const showButtons = savedToggleState === 'true';
+        toggleCheckbox.checked = showButtons;
+        toggleSampleButtons(showButtons);
+    }
+    
+    // Add event listener for the toggle
+    toggleCheckbox.addEventListener('change', (e) => {
+        const showButtons = e.target.checked;
+        toggleSampleButtons(showButtons);
+        localStorage.setItem('showSampleButtons', showButtons);
+    });
+    
+    // Add event listener for the start typing button
+    const startTypingBtn = document.getElementById('start-typing-btn');
+    const textInput = document.getElementById('text-input');
+    
+    if (startTypingBtn && textInput) {
+        startTypingBtn.addEventListener('click', () => {
+            textInput.focus();
+        });
+    }
     
     // This function contains all the logic and will only run once the image is loaded.
     function initializeHeatmapApp() {
@@ -54,7 +507,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Heatmap configuration
-        let heatmapInstance;
         const heatmapConfig = {
             container: heatmapContainer,
             radius: 65, // Default radius
@@ -132,14 +584,39 @@ document.addEventListener('DOMContentLoaded', () => {
         heatmapInstance.repaint();
 
         // Store the original key coordinates for toggling spacebar
-        const originalKeyCoordinates = { ...keyCoordinates };
+        originalKeyCoordinates = { ...keyCoordinates };
         
-        // Remove spacebar by default
-        delete keyCoordinates[' '];
-
-        // Toggle spacebar visibility
+        // Initialize spacebar state based on checkbox
         const toggleSpacebar = document.getElementById('toggle-spacebar');
         const heatmapSizeSelect = document.getElementById('heatmap-size');
+        
+        // Set initial spacebar state
+        if (toggleSpacebar && !toggleSpacebar.checked) {
+            delete keyCoordinates[' '];
+        }
+        
+        // Add event listener for spacebar toggle
+        if (toggleSpacebar) {
+            toggleSpacebar.addEventListener('change', function() {
+                if (this.checked) {
+                    keyCoordinates[' '] = originalKeyCoordinates[' '];
+                } else {
+                    delete keyCoordinates[' '];
+                }
+                // Regenerate heatmap with updated key coordinates
+                if (document.getElementById('wpm-test').style.display === 'block') {
+                    // If in WPM test mode, update the heatmap
+                    const wpmInput = document.getElementById('wpm-input');
+                    if (wpmInput) {
+                        const typedText = wpmInput.value;
+                        generateHeatmap(typedText);
+                    }
+                } else {
+                    // In normal mode
+                    generateHeatmap(textInput.value);
+                }
+            });
+        }
         
         // Heatmap size presets
         const heatmapSizes = {
@@ -161,16 +638,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return radius;
         }
-
-        // Toggle spacebar visibility
-        toggleSpacebar.addEventListener('change', function() {
-            if (this.checked) {
-                keyCoordinates[' '] = originalKeyCoordinates[' ']; // Restore spacebar
-            } else {
-                delete keyCoordinates[' ']; // Remove spacebar
-            }
-            generateHeatmap(textInput.value); // Regenerate heatmap
-        });
 
         // Change heatmap size
         heatmapSizeSelect.addEventListener('change', function() {
@@ -401,12 +868,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure the app only runs after the image is fully loaded
     if (keyboardImg.complete) {
         initializeHeatmapApp();
+        initHeatmap();  // Initialize heatmap
         initStats();
         
         // Add event listener for keyboard input
         const textInput = document.getElementById('text-input');
         textInput.addEventListener('keydown', (e) => {
             handleKeyForStats(e.key);
+            handleKeyDown(e);
         });
         
         // Update stats when text is pasted or changed programmatically
@@ -422,18 +891,18 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         keyboardImg.addEventListener('load', () => {
             initializeHeatmapApp();
+            initHeatmap();  // Initialize heatmap
             initStats();
             
             // Add event listener for keyboard input
             const textInput = document.getElementById('text-input');
             textInput.addEventListener('keydown', (e) => {
                 handleKeyForStats(e.key);
+                handleKeyDown(e);
             });
             
             // Update stats when text is pasted or changed programmatically
             textInput.addEventListener('input', () => {
-                // This will be triggered after the paste event
-                // We'll just update the word count and average word length
                 const text = textInput.value;
                 const words = text.trim().split(/\s+/).filter(word => word.length > 0);
                 stats.wordCount = words.length;

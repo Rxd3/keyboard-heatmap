@@ -28,6 +28,13 @@
             <span>Show Spacebar</span>
         </div>
         <div class="sidebar-toggle">
+            <label class="switch">
+                <input type="checkbox" id="toggle-sample-buttons">
+                <span class="slider round"></span>
+            </label>
+            <span>WPM mode&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div class="sidebar-toggle">
             <label for="heatmap-size">Heatmap Size:</label>
             <select id="heatmap-size" class="heatmap-size-select">
                 <option value="small">Small</option>
@@ -73,11 +80,22 @@
             <div id="heatmap-container"></div>
         </div>
 
-        <div class="sample-buttons">
+        <div class="sample-buttons" id="sample-buttons">
             <button id="sample1">Sample 1</button>
             <button id="sample2">Sample 2</button>
             <button id="sample3">Sample 3</button>
             <button id="sample4">Sample 4</button>
+        </div>
+        
+        <div class="start-screen" id="start-screen" style="display: none;">
+            <div id="wpm-start">
+                <div class="big-text">Ready to Start Typing?</div>
+                <button id="start-typing-btn" class="start-button">start</button>
+            </div>
+            <div id="wpm-test" style="display: none; position: relative; min-height: 100px; margin: 0 !important; padding: 0 !important; line-height: 1;">
+                <div id="wpm-text" class="big-text" style="white-space: pre-wrap; word-wrap: break-word; margin: 0 !important; padding: 0 !important;"></div>
+                <input type="text" id="wpm-input" style="opacity: 0; position: absolute; pointer-events: none; width: 0; height: 0; border: none; padding: 0; margin: 0;" tabindex="-1">
+            </div>
         </div>
 
         <textarea id="text-input" placeholder="Type here to generate a heatmap..."></textarea>
