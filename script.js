@@ -363,9 +363,145 @@ function initHeatmap() {
     return heatmapInstance;
 }
 
+// Create mobile toggle buttons
+function createMobileToggles() {
+    if (window.innerWidth > 768) return; // Only create on mobile
+    
+    // Remove existing toggles if they exist
+    const existingToggles = document.querySelector('.mobile-toggles');
+    if (existingToggles) {
+        existingToggles.remove();
+    }
+    
+    // Create container for mobile toggles
+    const mobileToggles = document.createElement('div');
+    mobileToggles.className = 'mobile-toggles';
+    
+    // Get current states
+    const spacebarVisible = ' ' in keyCoordinates;
+    const wpmMode = document.getElementById('wpm-test').style.display !== 'none';
+    
+    // Create Show Spacebar toggle
+    const spacebarToggle = document.createElement('div');
+    spacebarToggle.className = 'mobile-toggle-item';
+    spacebarToggle.innerHTML = `
+        <span>Show Spacebar</span>
+        <label class="switch">
+            <input type="checkbox" id="mobile-toggle-spacebar" ${spacebarVisible ? 'checked' : ''}>
+            <span class="slider round"></span>
+        </label>
+    `;
+    
+    // Create WPM Mode toggle
+    const wpmToggle = document.createElement('div');
+    wpmToggle.className = 'mobile-toggle-item';
+    wpmToggle.innerHTML = `
+        <span>WPM Mode</span>
+        <label class="switch">
+            <input type="checkbox" id="mobile-toggle-wpm" ${wpmMode ? 'checked' : ''}>
+            <span class="slider round"></span>
+        </label>
+    `;
+    
+    // Append toggles to container
+    mobileToggles.appendChild(spacebarToggle);
+    mobileToggles.appendChild(wpmToggle);
+    
+    // Insert after keyboard container
+    const keyboardContainer = document.getElementById('keyboard-container');
+    if (keyboardContainer && keyboardContainer.parentNode) {
+        keyboardContainer.parentNode.insertBefore(mobileToggles, keyboardContainer.nextSibling);
+    }
+    
+    // Add event listeners
+    const spacebarCheckbox = document.getElementById('mobile-toggle-spacebar');
+    const wpmCheckbox = document.getElementById('mobile-toggle-wpm');
+    
+    if (spacebarCheckbox) {
+        spacebarCheckbox.addEventListener('change', function(e) {
+            const showSpacebar = this.checked;
+            updateSpacebarVisibility(showSpacebar);
+            
+            // Update local storage if needed
+            localStorage.setItem('showSpacebar', showSpacebar);
+            
+            // Sync with desktop toggle if it exists
+            const desktopToggle = document.getElementById('toggle-spacebar');
+            if (desktopToggle) {
+                desktopToggle.checked = showSpacebar;
+                desktopToggle.dispatchEvent(new Event('change'));
+            }
+        });
+        
+        // Trigger initial state
+        if (spacebarCheckbox.checked) {
+            updateSpacebarVisibility(true);
+        }
+    }
+    
+    if (wpmCheckbox) {
+        wpmCheckbox.addEventListener('change', function(e) {
+            const wpmMode = this.checked;
+            toggleSampleButtons(wpmMode);
+            
+            // Update local storage
+            localStorage.setItem('wpmMode', wpmMode);
+            
+            // Sync with desktop toggle if it exists
+            const desktopToggle = document.getElementById('toggle-sample-buttons');
+            if (desktopToggle) {
+                desktopToggle.checked = wpmMode;
+                desktopToggle.dispatchEvent(new Event('change'));
+            }
+        });
+        
+        // Trigger initial state
+        if (wpmCheckbox.checked) {
+            toggleSampleButtons(true);
+        }
+    }
+}
+
+// Save original key coordinates for toggling spacebar
+originalKeyCoordinates = JSON.parse(JSON.stringify(keyCoordinates));
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     const keyboardImg = document.getElementById('keyboard-img');
+    
+    // Create mobile toggles if on mobile
+    createMobileToggles();
+    
+    // Update mobile toggles on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth <= 768) {
+                if (!document.querySelector('.mobile-toggles')) {
+                    createMobileToggles();
+                }
+            } else {
+                const mobileToggles = document.querySelector('.mobile-toggles');
+                if (mobileToggles) mobileToggles.remove();
+            }
+        }, 250);
+    });
+    
+    // Sync mobile toggles with desktop toggles
+    function syncMobileToggles() {
+        const desktopSpacebarToggle = document.getElementById('toggle-spacebar');
+        const mobileSpacebarToggle = document.getElementById('mobile-toggle-spacebar');
+        const desktopWpmToggle = document.getElementById('toggle-sample-buttons');
+        const mobileWpmToggle = document.getElementById('mobile-toggle-wpm');
+        
+        if (desktopSpacebarToggle && mobileSpacebarToggle) {
+            mobileSpacebarToggle.checked = desktopSpacebarToggle.checked;
+        }
+        if (desktopWpmToggle && mobileWpmToggle) {
+            mobileWpmToggle.checked = desktopWpmToggle.checked;
+        }
+    }
     
     // Set up start button event listener
     const startButton = document.getElementById('start-typing-btn');
@@ -391,6 +527,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const wpmStart = document.getElementById('wpm-start');
         const wpmTest = document.getElementById('wpm-test');
         
+        if (!sampleButtons || !startScreen || !textInput || !wpmStart || !wpmTest) {
+            console.error('One or more required elements not found');
+            return;
+        }
+        
         if (wpmMode) {
             // WPM mode ON - show start screen, hide sample buttons and textarea
             sampleButtons.style.display = 'none';
@@ -400,6 +541,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reset WPM test state
             wpmStart.style.display = 'block';
             wpmTest.style.display = 'none';
+            
+            // Reset any active test
+            resetWPMTest();
         } else {
             // WPM mode OFF - show sample buttons and textarea, hide start screen
             sampleButtons.style.display = 'block';
@@ -411,22 +555,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Initialize toggle state from localStorage if available
+    // Initialize WPM mode from localStorage if available
     const toggleCheckbox = document.getElementById('toggle-sample-buttons');
-    const savedToggleState = localStorage.getItem('showSampleButtons');
+    const savedWpmMode = localStorage.getItem('wpmMode');
+    const initialWpmMode = savedWpmMode ? savedWpmMode === 'true' : false;
     
-    if (savedToggleState !== null) {
-        const showButtons = savedToggleState === 'true';
-        toggleCheckbox.checked = showButtons;
-        toggleSampleButtons(showButtons);
+    // Initialize the UI based on the saved state
+    if (toggleCheckbox) {
+        // Set initial state
+        toggleCheckbox.checked = initialWpmMode;
+        
+        // Add event listener for desktop toggle
+        toggleCheckbox.addEventListener('change', function() {
+            const wpmMode = this.checked;
+            localStorage.setItem('wpmMode', wpmMode);
+            toggleSampleButtons(wpmMode);
+            
+            // Sync with mobile toggle if it exists
+            const mobileWpmToggle = document.getElementById('mobile-toggle-wpm');
+            if (mobileWpmToggle) {
+                mobileWpmToggle.checked = wpmMode;
+            }
+        });
+        
+        // Initialize mobile toggle if it exists
+        const mobileWpmToggle = document.getElementById('mobile-toggle-wpm');
+        if (mobileWpmToggle) {
+            mobileWpmToggle.checked = initialWpmMode;
+            
+            mobileWpmToggle.addEventListener('change', function() {
+                const wpmMode = this.checked;
+                localStorage.setItem('wpmMode', wpmMode);
+                toggleSampleButtons(wpmMode);
+                
+                // Sync with desktop toggle
+                if (toggleCheckbox) {
+                    toggleCheckbox.checked = wpmMode;
+                }
+            });
+        }
+        
+        // Set initial UI state
+        toggleSampleButtons(initialWpmMode);
     }
-    
-    // Add event listener for the toggle
-    toggleCheckbox.addEventListener('change', (e) => {
-        const showButtons = e.target.checked;
-        toggleSampleButtons(showButtons);
-        localStorage.setItem('showSampleButtons', showButtons);
-    });
     
     // Add event listener for the start typing button
     const startTypingBtn = document.getElementById('start-typing-btn');
