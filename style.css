@@ -198,6 +198,19 @@ h2 {
     50% { opacity: 0; }
 }
 
+/* WPM Test Styles - Minimal styles for incorrect keystroke feedback */
+#wpm-text span.incorrect {
+    color: #ff5252;
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-3px); }
+    40%, 60% { transform: translateX(3px); }
+}
+
 .typing {
     border-right: 3px solid #000000;
     animation: blink-caret 0.75s step-end infinite;

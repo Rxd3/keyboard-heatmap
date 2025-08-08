@@ -124,6 +124,9 @@ function handleKeyDown(e) {
         const currentChar = currentSentence[currentCharIndex];
         const spans = document.querySelectorAll('#wpm-text span');
         
+        // Remove any existing incorrect class from the current character
+        spans[currentCharIndex].classList.remove('incorrect');
+        
         if (e.key === currentChar) {
             // Correct character - update heatmap with the typed character
             if (heatmapInstance) {
@@ -176,6 +179,14 @@ function handleKeyDown(e) {
             
             // Move to next character
             spans[currentCharIndex].classList.add('current');
+        } else {
+            // Incorrect key pressed - add visual feedback
+            spans[currentCharIndex].classList.add('incorrect');
+            
+            // Remove the incorrect class after animation completes
+            setTimeout(() => {
+                spans[currentCharIndex].classList.remove('incorrect');
+            }, 500);
         }
     }
 }
