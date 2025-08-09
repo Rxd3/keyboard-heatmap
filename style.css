@@ -401,6 +401,99 @@ h3 {
     letter-spacing: 1px;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        display: block;
+        padding-top: 20px;
+    }
+
+    .container {
+        position: relative;
+        width: 90%;
+        padding: 1rem;
+        margin: 0 auto 120px auto; /* Margin for footer */
+        flex: none;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 32px;
+    }
+
+    #keyboard-container {
+        width: 100%;
+        max-width: 500px; /* Limit keyboard size on mobile */
+        margin: 0 auto 20px auto;
+    }
+
+    #keyboard-img {
+        width: 100%;
+        height: auto;
+    }
+
+    #heatmap-container {
+        top: -180px; /* Adjust for smaller keyboard */
+        left: 35px; /* Adjust for smaller keyboard */
+    }
+
+    #sidebar {
+        position: fixed;
+        bottom: 60px; /* Above the main footer */
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: rgba(10, 10, 10, 0.9);
+        padding: 10px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 99;
+    }
+
+    #sidebar .sidebar-toggle {
+        margin: 0;
+        padding: 0;
+        border: none;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #sidebar .switch {
+        position: static;
+        margin: 0;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #stats-container {
+        position: static;
+        width: 100%;
+        margin-top: 20px;
+        padding: 1rem;
+        background: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    #wpm-start, #wpm-test {
+        min-height: auto;
+    }
+
+    .big-text {
+        font-size: 24px;
+    }
+}
+
 .start-button:hover {
     transform: translateY(-2px); 
     box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4);
